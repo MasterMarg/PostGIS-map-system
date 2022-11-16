@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,7 +21,11 @@ public class FeatureInfoImpl implements FeatureInfoService {
 
     @Override
     public String save(DtoFeatureInfo featureInfo) {
-        int newId = (int) repository.count() + 1;
+        int newId = 1;
+        FeatureInfo info = repository.findAll().stream().max(Comparator.comparing(FeatureInfo::getId)).orElse(null);
+        if (info != null) {
+            newId = newId + info.getId();
+        }
         manager.createNativeQuery("INSERT into feature_info (ID, NAME, DESCRIPTION, GEOMETRY) VALUES (:id, :name, :description, ST_GeomFromEWKT(:geometry))")
                 .setParameter("id", newId)
                 .setParameter("description", featureInfo.getDescription())
