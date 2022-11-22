@@ -27,7 +27,11 @@ public class CircleGeometryController {
 
     @PutMapping("/update")
     public String update(@RequestBody CircleGeometry circle) {
-        circleService.update(circle);
-        return "Circle has been updated";
+        return circleService.update(circle);
+    }
+
+    @DeleteMapping("/delete")
+    public String delete(@RequestBody CircleGeometry circle) {
+        return circleService.delete(circle);
     }
 }

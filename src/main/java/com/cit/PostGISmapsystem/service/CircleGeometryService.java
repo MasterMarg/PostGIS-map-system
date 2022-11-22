@@ -10,5 +10,7 @@ public interface CircleGeometryService {
 
     List<CircleGeometry> loadCircles();
 
-    void update(CircleGeometry circleGeometry);
+    String update(CircleGeometry circleGeometry);
+
+    String delete(CircleGeometry circleGeometry);
 }

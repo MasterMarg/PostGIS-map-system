@@ -24,14 +24,31 @@ public class CircleGeometryServiceImpl implements CircleGeometryService {
     }
 
     @Override
-    public void update(CircleGeometry circleGeometry) {
-        CircleGeometry geometry = repository.findById(circleGeometry.getId()).orElse(null);
-        if (geometry != null) {
-            geometry.setName(circleGeometry.getName());
-            geometry.setDescription(circleGeometry.getDescription());
-            geometry.setCenter(circleGeometry.getCenter());
-            geometry.setRadius(circleGeometry.getRadius());
-            repository.save(geometry);
+    public String update(CircleGeometry circleGeometry) {
+        if (circleGeometry == null) {
+            return "Request body is empty";
         }
+        CircleGeometry geometry = repository.findById(circleGeometry.getId()).orElse(null);
+        if (geometry == null) {
+            return "Circle with given ID does not exist";
+        }
+        geometry.setName(circleGeometry.getName());
+        geometry.setDescription(circleGeometry.getDescription());
+        geometry.setCenter(circleGeometry.getCenter());
+        geometry.setRadius(circleGeometry.getRadius());
+        repository.save(geometry);
+        return "Circle has been updated";
+    }
+
+    @Override
+    public String delete(CircleGeometry circleGeometry) {
+        if (circleGeometry == null) {
+            return "Request body is empty";
+        }
+        if (!repository.existsById(circleGeometry.getId())) {
+            return "Circle with given ID does not exist";
+        }
+        repository.deleteById(circleGeometry.getId());
+        return "Circle has been removed";
     }
 }

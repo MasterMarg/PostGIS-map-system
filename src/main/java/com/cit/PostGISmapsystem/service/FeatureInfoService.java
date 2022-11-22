@@ -11,4 +11,6 @@ public interface FeatureInfoService {
     List loadFeatures();
 
     String update(DtoFeatureInfo featureInfo);
+
+    String delete(DtoFeatureInfo featureInfo);
 }

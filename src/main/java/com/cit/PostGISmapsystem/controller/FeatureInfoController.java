@@ -31,4 +31,9 @@ public class FeatureInfoController {
     public String update(@RequestBody DtoFeatureInfo info) {
         return service.update(info);
     }
+
+    @DeleteMapping("/delete")
+    public String delete(@RequestBody DtoFeatureInfo info) {
+        return service.delete(info);
+    }
 }

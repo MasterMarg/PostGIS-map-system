@@ -42,15 +42,30 @@ public class FeatureInfoImpl implements FeatureInfoService {
 
     @Override
     public String update(DtoFeatureInfo featureInfo) {
-        if (repository.existsById(featureInfo.getId())) {
-            manager.createNativeQuery("UPDATE feature_info SET NAME=:name, DESCRIPTION=:description, GEOMETRY=ST_GeomFromEWKT(:geometry) WHERE ID=:id")
-                    .setParameter("name", featureInfo.getName())
-                    .setParameter("description", featureInfo.getDescription())
-                    .setParameter("geometry", featureInfo.getGeometry())
-                    .setParameter("id", featureInfo.getId())
-                    .executeUpdate();
-            return "Feature info has been updated";
+        if (featureInfo == null) {
+            return "Request body is empty";
         }
-        return "There is no feature with provided ID";
+        if (!repository.existsById(featureInfo.getId())) {
+            return "There is no feature with provided ID";
+        }
+        manager.createNativeQuery("UPDATE feature_info SET NAME=:name, DESCRIPTION=:description, GEOMETRY=ST_GeomFromEWKT(:geometry) WHERE ID=:id")
+                .setParameter("name", featureInfo.getName())
+                .setParameter("description", featureInfo.getDescription())
+                .setParameter("geometry", featureInfo.getGeometry())
+                .setParameter("id", featureInfo.getId())
+                .executeUpdate();
+        return "Feature info has been updated";
+    }
+
+    @Override
+    public String delete(DtoFeatureInfo featureInfo) {
+        if (featureInfo == null) {
+            return "Request body is empty";
+        }
+        if (!repository.existsById(featureInfo.getId())) {
+            return "There is no feature with provided ID";
+        }
+        repository.deleteById(featureInfo.getId());
+        return "Feature has been removed";
     }
 }
